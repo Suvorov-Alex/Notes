@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:notes/entity/note.dart';
+import 'package:notes/view/new_item_view.dart';
 
 void main() => runApp(MyApp());
 
@@ -36,11 +37,19 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Notes'),
-          centerTitle: true,
+      appBar: AppBar(
+        title: Text('Notes'),
+        centerTitle: true,
+      ),
+      body: buildListBody(),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
         ),
-        body: buildListBody());
+        onPressed: () => openItem(),
+      ),
+    );
   }
 
   Widget buildListBody() {
@@ -69,6 +78,12 @@ class _HomePageState extends State<HomePage> {
         onTap: () => setState(() => note.changeCompleteness()),
       ),
     );
+  }
+
+  void openItem() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return ItemView();
+    }));
   }
 
   void removeNote(Note note) {

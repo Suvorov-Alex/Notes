@@ -1,6 +1,10 @@
-# notes
+# Notes
 
 Notes mobile app
+Functionallity:
+1. Add new notes and edit them by long press
+2. Remove notes by sliding it's from left to the right
+3. Mark notes as 'Done'
 
 ## Getting Started
 

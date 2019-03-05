@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
 
 class ItemView extends StatefulWidget {
+  final String title;
+
+  ItemView({this.title});
+
   @override
   _ItemViewState createState() => _ItemViewState();
 }
 
 class _ItemViewState extends State<ItemView> {
-  TextEditingController textFieldController = TextEditingController();
+  TextEditingController textFieldController
+
+  @override
+  void initState() {
+    textFieldController = TextEditingController(text: widget.title);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +47,8 @@ class _ItemViewState extends State<ItemView> {
   }
 
   void save() {
-    print(textFieldController.text);
+    if (textFieldController.text.isNotEmpty) {
+      Navigator.of(context).pop(textFieldController.text);
+    }
   }
 }

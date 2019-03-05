@@ -5,7 +5,6 @@ import 'package:notes/view/new_item_view.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -63,27 +62,53 @@ class _HomePageState extends State<HomePage> {
 
   Widget buildListItem(Note note) {
     return Dismissible(
-      key: Key(note.hashCode.toString()),
-      onDismissed: (direction) => removeNote(note),
-      direction: DismissDirection.startToEnd,
-      background: Container(
-        color: Colors.red[400],
-        child: Icon(Icons.delete, color: Colors.white),
-        alignment: Alignment.centerLeft,
-        padding: EdgeInsets.only(left: 12.0),
-      ),
-      child: ListTile(
-        title: Text(note.title),
-        trailing: Checkbox(value: note.isCompleted, onChanged: null),
-        onTap: () => setState(() => note.changeCompleteness()),
-      ),
+        key: Key(note.hashCode.toString()),
+        onDismissed: (direction) => removeNote(note),
+        direction: DismissDirection.startToEnd,
+        background: Container(
+          color: Colors.red[400],
+          child: Icon(Icons.delete, color: Colors.white),
+          alignment: Alignment.centerLeft,
+          padding: EdgeInsets.only(left: 12.0),
+        ),
+        child: buildListTile(note));
+  }
+
+  Widget buildListTile(Note note) {
+    return ListTile(
+      title: Text(note.title),
+      trailing: Checkbox(value: note.isCompleted, onChanged: null),
+      onTap: () => setState(() => note.changeCompleteness()),
+      onLongPress: () => openItemEditorView(note),
     );
   }
 
   void openItem() {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return ItemView();
-    }));
+    })).then((title) {
+      if (title != null) {
+        saveNote(Note(title: title));
+      }
+    });
+  }
+
+  void openItemEditorView(Note note) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return ItemView(title: note.title);
+    })).then((title) {
+      if (title != null) {
+        editNote(note, title);
+      }
+    });
+  }
+
+  void saveNote(Note note) {
+    notes.add(note);
+  }
+
+  void editNote(Note note, String title) {
+    note.title = title;
   }
 
   void removeNote(Note note) {

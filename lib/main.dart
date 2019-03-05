@@ -26,21 +26,13 @@ class _HomePageState extends State<HomePage> {
   List<Note> notes = List<Note>();
 
   @override
-  void initState() {
-    notes.add(Note(title: 'item A'));
-    notes.add(Note(title: 'item B'));
-    notes.add(Note(title: 'item C'));
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Notes'),
         centerTitle: true,
       ),
-      body: buildListBody(),
+      body: notes.isNotEmpty ? buildListBody() : buildEmptyBody(),
       floatingActionButton: FloatingActionButton(
         child: Icon(
           Icons.add,
@@ -57,6 +49,12 @@ class _HomePageState extends State<HomePage> {
       itemBuilder: (context, pos) {
         return buildListItem(notes[pos]);
       },
+    );
+  }
+
+  Widget buildEmptyBody() {
+    return Center(
+      child: Text('No notes'),
     );
   }
 
@@ -113,5 +111,8 @@ class _HomePageState extends State<HomePage> {
 
   void removeNote(Note note) {
     notes.remove(note);
+    if (notes.isEmpty) {
+      setState(() {});
+    }
   }
 }
